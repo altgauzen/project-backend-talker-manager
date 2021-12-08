@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const validateEmail = require('./middlewares/validateEmail');
+const validatePassword = require('./middlewares/validatePassword');
+const validateToken = require('./middlewares/validateToken');
 
 const app = express();
 app.use(bodyParser.json());
@@ -26,8 +29,9 @@ app.get('/talker/:index', (request, response) => {
   const { index } = request.params;
   if (data[index]) { return response.status(HTTP_OK_STATUS).send(data[(index - 1)]); }
   response.status(HTTP_NOT_FOUND).json({ message: 'Pessoa palestrante não encontrada' });
-  //  next();
 });
+
+app.post('/login', validateEmail, validatePassword, validateToken);
 
 app.listen(PORT, () => {
   console.log('Online');
