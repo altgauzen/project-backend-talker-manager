@@ -1,10 +1,20 @@
-const randomToken = require('random-token');
+const HTTP_UNAUTHORIZED = 401;
 
-const HTTP_OK_STATUS = 200;
+const validateToken = (request, response, next) => {
+  const { authorization } = request.headers;
 
-const validateToken = (_request, response, next) => {
-  const token = randomToken(16);
-  response.status(HTTP_OK_STATUS).json({ token });
+  if (!authorization) {
+    return response
+      .status(HTTP_UNAUTHORIZED)
+      .json({ message: 'Token não encontrado' });
+  }
+
+  if ((authorization.length < 16) || (authorization.length > 16)) {
+    return response
+      .status(HTTP_UNAUTHORIZED)
+      .json({ message: 'Token inválido' });
+  }
+  
   next();
 };
 
