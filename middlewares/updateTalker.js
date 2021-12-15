@@ -4,7 +4,6 @@ const HTTP_OK = 200;
 
 const updateTalker = (request, response) => {
   const index = Number(request.params.index);
-  console.log(typeof index);
   const { name, age, talk } = request.body;
   const updatedTalker = { name, age, id: index, talk };
 
